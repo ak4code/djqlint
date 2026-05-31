@@ -1,5 +1,7 @@
 # DjQlint — Django Query Linter
 
+🌍 **English** · [Русский](README.ru.md)
+
 A fast, production-grade static analyzer (written in Rust) that detects
 inefficient Django ORM queries and database anti-patterns in Python code,
 **without importing or running your project**. It parses source with
