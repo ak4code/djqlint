@@ -1,0 +1,12 @@
+# DjQlint configuration. Place this file at your repository root.
+
+[rules]
+# Disable rules by code. Available: N001, P001, P002.
+disabled = []
+
+[files]
+# Skip any path containing one of these substrings.
+exclude = ["/migrations/", "/tests/", "/.venv/", "/node_modules/"]
+
+# Honour .gitignore / .ignore while walking (default: true).
+respect_gitignore = true

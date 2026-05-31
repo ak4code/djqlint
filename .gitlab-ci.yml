@@ -1,0 +1,40 @@
+# GitLab CI integration for DjQlint.
+#
+# Produces a SARIF artifact and also a GitLab Code Quality report (Code Climate
+# JSON), which renders inline in merge requests.
+
+stages:
+  - lint
+  - scan
+
+variables:
+  CARGO_HOME: "$CI_PROJECT_DIR/.cargo"
+
+cache:
+  key: "$CI_COMMIT_REF_SLUG"
+  paths:
+    - .cargo/
+    - target/
+
+rust:lint-test:
+  stage: lint
+  image: rust:latest
+  before_script:
+    - rustup component add clippy rustfmt
+  script:
+    - cargo fmt --all -- --check
+    - cargo clippy --all-targets -- -D warnings
+    - cargo test --all
+
+djqlint:scan:
+  stage: scan
+  image: rust:latest
+  script:
+    - cargo build --release
+    - ./target/release/djqlint --format sarif --output djqlint.sarif --exit-zero .
+  artifacts:
+    when: always
+    paths:
+      - djqlint.sarif
+    reports:
+      sast: djqlint.sarif
